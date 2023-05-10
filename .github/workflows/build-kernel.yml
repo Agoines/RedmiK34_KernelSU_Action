@@ -52,10 +52,12 @@ jobs:
         tar -C clang-aosp/ -zxvf clang-${{ env.CLANG_VERSION }}.tar.gz
         
         mkdir proton-aosp
-        git clone https://github.com/kdrag0n/proton-clang.git --depth=1 ./proton-aosp/
+        wget https://github.com/kdrag0n/proton-clang/archive/refs/tags/20210522.tar.gz
+        tar -C proton-aosp/ -zxvf 20210522.tar.gz
         
         mkdir dtc
-        git clone https://android.googlesource.com/platform/external/dtc --depth=1 ./dtc/
+        wget https://android.googlesource.com/platform/external/dtc/+archive/refs/heads/${{ env.CLANG_BRANCH }}.tar.gz
+        tar -C dtc/ -zxvf  ${{ env.CLANG_BRANCH }}.tar.gz
 
     - name: Download Custom-Clang
       if: env.USE_CUSTOM_CLANG == 'true'
@@ -89,7 +91,7 @@ jobs:
             echo "FORMAT_MKBOOTING=$(echo `tools/unpack_bootimg.py --boot_img=boot-source.img --format mkbootimg`)" >> $GITHUB_ENV
             echo "HAVE_SOURCE_BOOT_IMAGE=true" >> $GITHUB_ENV
         fi
-  
+
     - name: Setup KernelSU
       if: env.USE_KERNELSU == 'true'
       run: |
@@ -118,8 +120,8 @@ jobs:
         export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/:$PATH
         export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/lib64/:$LD_LIBRARY_PATH
-        export CROSS_COMPILE=$GITHUB_WORKSPACE/kernel_workspace/proton-clang/bin/aarch64-linux-gnu-
-        export CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/kernel_workspace/proton-clang/bin/arm-linux-gnueabi-
+        export CROSS_COMPILE=$GITHUB_WORKSPACE/kernel_workspace/proton-aosp/bin/aarch64-linux-gnu-
+        export CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/kernel_workspace/proton-aosp/bin/arm-linux-gnueabi-
         export KBUILD_BUILD_HOST=Github-Action
         export KBUILD_BUILD_USER=$(echo ${{ github.actor }} | tr A-Z a-z)
         make -j$(nproc --all) O=out ARCH=${{ env.TARGET_ARCH }} SUBARCH=${{ env.TARGET_ARCH }} ${{ env.CUSTOM_CLANG_BUILD_COMMAND }} CC=clang ${{ env.BUILD_EXTRA_COMMAND }} ${{ env.KERNEL_DEFCONFIG }}
