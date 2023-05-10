@@ -115,7 +115,7 @@ jobs:
     - name: Build kernel
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        export DTC_EXT = $GITHUB_WORKSPACE/kernel_workspace/dtc
+        export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:$PATH
         export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/lib64/:$LD_LIBRARY_PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/kernel_workspace/proton-clang/bin/aarch64-linux-gnu-
