@@ -119,7 +119,7 @@ jobs:
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin:$PATH
         export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/lib64/:$LD_LIBRARY_PATH
         export CROSS_COMPILE=$GITHUB_WORKSPACE/kernel_workspace/proton-clang/bin/aarch64-linux-gnu-
-        export CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/kernel_workspace/bin/arm-linux-gnueabi-
+        export CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/kernel_workspace/proton-clang/bin/arm-linux-gnueabi-
         export KBUILD_BUILD_HOST=Github-Action
         export KBUILD_BUILD_USER=$(echo ${{ github.actor }} | tr A-Z a-z)
         make -j$(nproc --all) O=out ARCH=${{ env.TARGET_ARCH }} SUBARCH=${{ env.TARGET_ARCH }} ${{ env.CUSTOM_CLANG_BUILD_COMMAND }} CC=clang ${{ env.BUILD_EXTRA_COMMAND }} ${{ env.KERNEL_DEFCONFIG }}
