@@ -56,8 +56,8 @@ jobs:
         tar -C gcc-aosp/ -zxvf android-11.0.0_r48.tar.gz
         
         mkdir dtc_ext
-        wget https://android.googlesource.com/platform/external/dtc/+archive/refs/heads/${{ env.CLANG_BRANCH }}.tar.gz
-        tar -C dtc_ext/ -zxvf  ${{ env.CLANG_BRANCH }}.tar.gz
+        wget https://android.googlesource.com/platform/prebuilts/misc/+archive/refs/heads/${{ env.CLANG_BRANCH }}/linux-x86/dtc.tar.gz
+        tar -C dtc_ext/ -zxvf dtc.tar.gz
 
     - name: Download Custom-Clang
       if: env.USE_CUSTOM_CLANG == 'true'
@@ -117,7 +117,7 @@ jobs:
     - name: Build kernel
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-        export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc_ext/
+        export DTC_EXT=$GITHUB_WORKSPACE/kernel_workspace/dtc_ext/dtc
         export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/bin/:$PATH
         export LD_LIBRARY_PATH=$GITHUB_WORKSPACE/kernel_workspace/clang-aosp/lib64/:$LD_LIBRARY_PATH
         export KBUILD_BUILD_HOST=Github-Action
